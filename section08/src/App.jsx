@@ -34,15 +34,30 @@ function App() {
       id: idRef.current++,
       isDone: false,
       content: content,
-      dat: new Date().getTime(),
+      date: new Date().getTime(),
     };
     setTodos([newTodo, ...todos]);
+  };
+
+  const onUpdate = (targetId) => {
+    //투두 스테이트 값들 중에
+    // 타겟아이디와 일치하는 아이디를 갖는 투두아이템의 이즈던 변경
+
+    //인수: 투두스 배열에서 타겟아이디와 일치하는 아이디를 갖는 요소의 데이터만 딱 바꾼 새로운 배열
+    setTodos(
+      todos.map((todo) =>
+        todo.id === targetId ? {...todo, isDone: !todo.isDone} : todo
+      )
+    );
+  };
+  const onDelete = (targetId) => {
+    setTodos(todos.filter((todo) => todo.id !== targetId));
   };
   return (
     <div className="App">
       <Header />
       <Editor onCreate={onCreate} />
-      <List />
+      <List todos={todos} onUpdate={onUpdate} onDelete={onDelete} />
     </div>
   );
 }
